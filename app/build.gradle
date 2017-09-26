@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+    defaultConfig {
+        applicationId "com.example.deerhunter.coroutinessample"
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    compile "com.google.code.gson:gson:$gson_version"
+    compile "com.jakewharton.timber:timber:$timber_version"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    compile "com.github.bumptech.glide:glide:$glide_version"
+
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    compile "com.squareup.okhttp3:okhttp:$ok_http_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$ok_http_version"
+    compile "com.squareup.okio:okio:$okio_version"
+
+    compile "com.github.GrenderG:Toasty:$toasty_version"
+
+    compile "com.hannesdorfmann:adapterdelegates3:$adapter_delegates_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    compile "com.arello-mobile:moxy:$moxy_version"
+    compile "com.arello-mobile:moxy-app-compat:$moxy_version"
+    kapt "com.arello-mobile:moxy-compiler:$moxy_version"
+
+    compile 'co.metalab.asyncawait:asyncawait:1.0.0'
+    compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+
+
+    androidExtensions {
+        experimental = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
