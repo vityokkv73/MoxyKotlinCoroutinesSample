@@ -1,5 +1,6 @@
 package com.example.deerhunter.coroutinessample.ui.movie.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,25 +11,20 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.example.deerhunter.coroutinessample.R
 import com.example.deerhunter.coroutinessample.data.Movie
 import com.example.deerhunter.coroutinessample.di.movie.MovieModule
-import com.example.deerhunter.coroutinessample.ui.movie.presenter.MoviesPresenter
-import com.example.deerhunter.coroutinessample.ui.movie.view.adapter.MoviesAdapter
-import com.example.deerhunter.coroutinessample.utilities.getActivityComponent
-import com.example.deerhunter.coroutinessample.utilities.withArguments
+import com.example.deerhunter.coroutinessample.ui.movie.presenter.MoviePresenter
+import com.example.deerhunter.coroutinessample.utilities.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.movie_fragment.*
-import kotlinx.android.synthetic.main.movies_fragment.*
 import javax.inject.Inject
 
 class MovieFragment : MvpAppCompatFragment(), IMovieView {
 
-//    @Inject
-//    @InjectPresenter
-//    lateinit var presenter: MoviePresenter
-//
-//    @ProvidePresenter
-//    fun providePresenter(): MoviePresenter {
-//        return presenter
-//    }
+    @Inject
+    @InjectPresenter
+    lateinit var presenter: MoviePresenter
+
+    @ProvidePresenter
+    fun providePresenter() = presenter
 
     private val movie: Movie by lazy { arguments.getParcelable<Movie>(MOVIE) }
 
@@ -43,7 +39,7 @@ class MovieFragment : MvpAppCompatFragment(), IMovieView {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView.text = movie.originalTitle
+        presenter.setMovie(movie)
     }
 
     override fun showError(message: String) {
@@ -51,11 +47,26 @@ class MovieFragment : MvpAppCompatFragment(), IMovieView {
     }
 
     override fun showProgress() {
-        progressBar.visibility = View.VISIBLE
+        progressBar.makeVisible()
     }
 
     override fun hideProgress() {
-        progressBar.visibility = View.GONE
+        progressBar.makeGone()
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun showMovieData(originalTitle: String, year: Int, genres: List<String>, overviewText: String, posterPath: String) {
+        title.text = originalTitle
+        yearAndGenres.text = "$year, ${genres.joinToString()}"
+        overview.text = overviewText
+        logo.loadImage(posterPath)
+    }
+
+    override fun showAdditionalMovieInfo(budgetText: Int, productionCountriesText: List<String>) {
+        budget.makeVisible()
+        productionCountries.makeVisible()
+        budget.text = getString(R.string.budget, budgetText)
+        productionCountries.text = getString(R.string.production_countries, productionCountriesText.joinToString())
     }
 
     companion object {

@@ -3,13 +3,9 @@ package com.example.deerhunter.coroutinessample.ui.common
 import com.example.deerhunter.coroutinessample.ui.movie.view.items.LoadMoreErrorItem
 import com.example.deerhunter.coroutinessample.ui.movie.view.items.LoadMoreProgressItem
 import com.example.deerhunter.coroutinessample.ui.movie.view.items.UiItem
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
 import com.hannesdorfmann.adapterdelegates3.ListDelegationAdapter
 
-abstract class UiItemsAdapter : ListDelegationAdapter<MutableList<UiItem>> {
-
-    constructor() : super()
-    constructor(delegatesManager: AdapterDelegatesManager<MutableList<UiItem>>) : super(delegatesManager)
+abstract class UiItemsAdapter : ListDelegationAdapter<MutableList<UiItem>>() {
 
     override fun setItems(items: MutableList<UiItem>) {
         super.setItems(items)

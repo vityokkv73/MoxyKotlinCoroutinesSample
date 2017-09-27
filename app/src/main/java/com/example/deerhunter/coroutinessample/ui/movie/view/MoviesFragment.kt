@@ -61,7 +61,15 @@ class MoviesFragment : MvpAppCompatFragment(), IMoviesView {
             adapter = moviesAdapter
             addOnScrollListener(scrollListener)
             itemAnimator = DefaultItemAnimator()
-            layoutManager = GridLayoutManager(activity, spanCount, GridLayoutManager.VERTICAL, false)
+            layoutManager = GridLayoutManager(activity, spanCount, GridLayoutManager.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    // TODO: we should use adapter delegates to find correct itemViewType
+                    override fun getSpanSize(position: Int) = when (adapter.getItemViewType(position)) {
+                        0 -> 1
+                        else -> getSpanCount()
+                    }
+                }
+            }
             addItemDecoration(GridSpaceItemDecoration(spanCount, horizontalSpacing, verticalSpacing, false, GridLayoutManager.VERTICAL))
         }
     }

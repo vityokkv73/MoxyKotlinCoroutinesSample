@@ -9,4 +9,6 @@ interface IMovieView : MvpView {
     fun showError(message: String)
     fun showProgress()
     fun hideProgress()
+    fun showMovieData(originalTitle: String, year: Int, genres: List<String>, overviewText: String, posterPath: String)
+    fun showAdditionalMovieInfo(budgetText: Int, productionCountriesText: List<String>)
 }

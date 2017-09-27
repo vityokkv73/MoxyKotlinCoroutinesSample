@@ -5,4 +5,6 @@
     <string name="error_view_wait_more_or_try_message">Подождите немного или попробуйте еще раз</string>
     <string name="error_view_retry_button_text">Попробовать еще раз</string>
     <string name="error_retry_item_text">Произошла ошибка при загрузке данных</string>
+    <string name="budget">Budget: %d</string>
+    <string name="production_countries">Production countries: %s</string>
 </resources>
