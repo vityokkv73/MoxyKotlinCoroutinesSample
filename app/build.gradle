@@ -23,8 +23,10 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$support_library_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "com.android.support:appcompat-v7:$support_library_version"
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile "com.android.support:cardview-v7:$support_library_version"
 
     compile "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -53,6 +55,8 @@ dependencies {
 
     compile 'co.metalab.asyncawait:asyncawait:1.0.0'
     compile "com.jaredsburrows.retrofit:retrofit2-synchronous-adapter:0.4.0"
+
+    compile "org.jetbrains.anko:anko-coroutines:$anko_version"
 }
 
 repositories {

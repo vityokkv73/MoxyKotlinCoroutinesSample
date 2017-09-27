@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface IRemoteApi {
 
     @GET("movie/top_rated")
-    fun getTopRatedMovies(@Query("offset") offset: Int, @Query("limit") limit: Int): MovieListResponse
+    fun getTopRatedMovies(@Query("page") page: Int): MovieListResponse
 }

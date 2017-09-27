@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="banner_height">385dp</dimen>
+    <dimen name="channel_card_width">156dp</dimen>
+    <dimen name="channel_card_height">86dp</dimen>
+    <dimen name="media_view_horizontal_padding">16dp</dimen>
+    <dimen name="horizontal_space_between_cards">8dp</dimen>
+    <dimen name="vertical_space_between_cards">12dp</dimen>
+    <dimen name="channel_block_horizontal_padding">16dp</dimen>
+    <dimen name="movie_card_width">156dp</dimen>
+    <dimen name="movie_card_height">282dp</dimen>
+    <dimen name="media_view_horizontal_divider">16dp</dimen>
+    <dimen name="service_card_width">328dp</dimen>
+    <dimen name="service_card_height">400dp</dimen>
+    <dimen name="service_row_header_height">72dp</dimen>
+    <dimen name="medium_banner_card_width">328dp</dimen>
+    <dimen name="medium_banner_card_height">282dp</dimen>
+    <dimen name="media_item_divider">16dp</dimen>
+</resources>

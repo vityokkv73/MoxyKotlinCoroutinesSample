@@ -1,40 +1,18 @@
 package com.example.deerhunter.coroutinessample.ui.movie.view.adapter
 
-import android.content.Context
-import android.support.v7.widget.RecyclerView
-import android.view.ViewGroup
 import com.example.deerhunter.coroutinessample.data.Movie
-import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
+import com.example.deerhunter.coroutinessample.ui.common.LoadMoreErrorViewAdapterDelegate
+import com.example.deerhunter.coroutinessample.ui.common.LoadMoreProgressAdapterDelegate
+import com.example.deerhunter.coroutinessample.ui.common.UiItemsAdapter
+import com.example.deerhunter.coroutinessample.ui.movie.view.items.LoadMoreErrorItem
+import com.example.deerhunter.coroutinessample.ui.utilities.UiCalculator
 import java.util.*
 
-class MoviesAdapter(context: Context, listener: (Movie) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private val delegates: AdapterDelegatesManager<List<Movie>> = AdapterDelegatesManager()
-
-    private var items = ArrayList<Movie>()
-
+class MoviesAdapter(rowLayoutData: UiCalculator.RowLayoutData, listener: (Movie) -> Unit, loadMoreClickListener: (Int, LoadMoreErrorItem) -> Unit) : UiItemsAdapter() {
     init {
-        delegates.addDelegate(MovieAdapterDelegate(context, listener))
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return delegates.onCreateViewHolder(parent, viewType)
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegates.onBindViewHolder(items, position, holder)
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return delegates.getItemViewType(items, position)
-    }
-
-    fun addMovies(data: List<Movie>) {
-        items.addAll(data)
-        notifyDataSetChanged()
+        items = ArrayList()
+        delegatesManager.addDelegate(MovieAdapterDelegate(rowLayoutData, listener))
+        delegatesManager.addDelegate(LoadMoreProgressAdapterDelegate())
+        delegatesManager.addDelegate(LoadMoreErrorViewAdapterDelegate(loadMoreClickListener))
     }
 }

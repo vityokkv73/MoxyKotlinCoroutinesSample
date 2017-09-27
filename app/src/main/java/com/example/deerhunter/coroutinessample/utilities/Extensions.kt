@@ -1,7 +1,11 @@
 package com.example.deerhunter.coroutinessample.utilities
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Parcelable
@@ -10,6 +14,11 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.Px
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
@@ -89,11 +98,6 @@ fun ImageView.loadImage(
         request.centerCrop()
     }
 
-    /*
-     * Note: if using center crop or fit center and transformations
-     * you need to manually add FitCenter() or CenterCrop()
-     * because glide overrides it
-     */
     if (transformations.isNotEmpty()) {
         request.bitmapTransform(*transformations)
     }
@@ -120,7 +124,76 @@ fun Context.getColorCompat(@ColorRes colorRes: Int) = ContextCompat.getColor(thi
 fun Context.getDrawableCompat(@DrawableRes drawableRes: Int) = ContextCompat.getDrawable(this, drawableRes)
 
 private fun getImageLink(fileName: String): String {
-        return StringBuilder("http://image.tmdb.org/t/p/w185/")
+    // we need to call /configuration to get base_url and possible size formats.
+    // But as you could notice I'm too lazy to do this :) so I've just hardcoded it
+        return StringBuilder("http://image.tmdb.org/t/p/w500/")
                 .append(fileName.removePrefix("/")).append("?api_key=b0fc4c075392638bf2e7cdd923e9e42c").toString()
 }
 
+fun Activity.getIntExtra(key: String, defValue: Int): Int = this.intent.extras.getInt(key, defValue)
+
+fun Activity.getSerializableExtra(key: String): Serializable? = this.intent.extras.getSerializable(key)
+
+fun <T : Intent> T.withArguments(vararg params: Pair<String, Any>): T {
+    val bundle = bundleOf(*params)
+    this.putExtras(bundle)
+    return this
+}
+
+fun dpToPx(dp: Int): Int {
+    return (dp * Resources.getSystem().displayMetrics.density).toInt()
+}
+
+fun Fragment.getDisplaySize(): Point {
+    val display = activity.windowManager.defaultDisplay
+    val size = Point()
+    display.getSize(size)
+    return size
+}
+
+fun Context.getDisplaySize(): Point {
+    val metrics = DisplayMetrics()
+    val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    windowManager.defaultDisplay.getMetrics(metrics)
+    return Point(metrics.widthPixels, metrics.heightPixels)
+}
+
+fun View.parentViewGroup() = parent as ViewGroup
+
+fun View?.isChildOf(possibleParent: View): Boolean {
+    if (this == null) return false
+    if (this == possibleParent) return true
+    if (possibleParent !is ViewGroup) return false
+    if (possibleParent.indexOfChild(this) > -1) return true
+    if (parent != null && parent is ViewGroup) return (parent as ViewGroup).isChildOf(possibleParent)
+    return false
+}
+
+fun View.setWidth(width: Int) {
+    layoutParams = layoutParams.apply { this.width = width }
+}
+
+fun View.setHeight(height: Int) {
+    layoutParams = layoutParams.apply { this.height = height }
+}
+
+fun View.setSize(size: Point) {
+    layoutParams = layoutParams.apply {
+        width = size.x
+        height = size.y
+    }
+}
+
+fun View.makeGone() {
+    visibility = View.GONE
+}
+
+fun View.makeInvisible() {
+    visibility = View.INVISIBLE
+}
+
+fun View.makeVisible() {
+    visibility = View.VISIBLE
+}
+
+fun ViewGroup.inflate(layoutResId: Int, root: ViewGroup = this, attachToRoot: Boolean = false): View = LayoutInflater.from(context).inflate(layoutResId, root, attachToRoot)

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="horizontal_padding">48dp</dimen>
+    <dimen name="horizontal_space_between_cards">16dp</dimen>
+    <dimen name="vertical_space_between_cards">12dp</dimen>
+</resources>
