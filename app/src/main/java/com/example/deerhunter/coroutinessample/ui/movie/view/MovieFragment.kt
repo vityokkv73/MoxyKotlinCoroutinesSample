@@ -62,11 +62,13 @@ class MovieFragment : MvpAppCompatFragment(), IMovieView {
         logo.loadImage(posterPath)
     }
 
-    override fun showAdditionalMovieInfo(budgetText: Int, productionCountriesText: List<String>) {
+    override fun showAdditionalMovieInfo(budgetText: Int, productionCountriesText: List<String>, similarMoviesNames: List<String>) {
         budget.makeVisible()
         productionCountries.makeVisible()
+        similarMovies.makeVisible()
         budget.text = getString(R.string.budget, budgetText)
         productionCountries.text = getString(R.string.production_countries, productionCountriesText.joinToString())
+        similarMovies.text = getString(R.string.similar_movies, similarMoviesNames.joinToString())
     }
 
     companion object {

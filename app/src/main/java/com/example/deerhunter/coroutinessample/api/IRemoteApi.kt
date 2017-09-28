@@ -17,4 +17,7 @@ interface IRemoteApi {
 
     @GET("movie/{movie_id}")
     fun getMovieFullInfo(@Path("movie_id") id: Int): MovieFullInfoResponse
+
+    @GET("movie/{movie_id}/similar")
+    fun getSimilarMovies(@Path("movie_id") id: Int): MovieListResponse
 }

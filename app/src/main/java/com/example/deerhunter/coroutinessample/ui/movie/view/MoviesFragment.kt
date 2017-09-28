@@ -88,6 +88,9 @@ class MoviesFragment : MvpAppCompatFragment(), IMoviesView {
     }
 
     override fun openMovieScreen(movie: Movie) {
-        activity.supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, MovieFragment.newInstance(movie)).addToBackStack(null).commit()
+        activity.supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, MovieFragment.newInstance(movie))
+                .addToBackStack(null)
+                .commit()
     }
 }

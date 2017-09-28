@@ -25,6 +25,7 @@ android {
 dependencies {
     compile "com.android.support:appcompat-v7:$support_library_version"
     compile "com.android.support:cardview-v7:$support_library_version"
+    compile "com.android.support:recyclerview-v7:$support_library_version"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile "com.google.dagger:dagger:$dagger_version"
@@ -45,7 +46,7 @@ dependencies {
 
     compile "com.github.GrenderG:Toasty:$toasty_version"
 
-    compile "com.hannesdorfmann:adapterdelegates3:$adapter_delegates_version"
+    compile ("com.hannesdorfmann:adapterdelegates3:$adapter_delegates_version") { transitive=false }
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     compile "com.arello-mobile:moxy:$moxy_version"

@@ -94,6 +94,20 @@
                 app:layout_constraintTop_toBottomOf="@id/budget" />
 
             <TextView
+                android:id="@+id/similarMovies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/sorts_mill_goudy"
+                android:textColor="#ee000000"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
+                app:layout_constraintStart_toStartOf="@id/leftGuideLine"
+                app:layout_constraintTop_toBottomOf="@id/productionCountries" />
+
+            <TextView
                 android:id="@+id/overview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -104,7 +118,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@id/rightGuideLine"
                 app:layout_constraintStart_toStartOf="@id/leftGuideLine"
-                app:layout_constraintTop_toBottomOf="@id/productionCountries" />
+                app:layout_constraintTop_toBottomOf="@id/similarMovies" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
