@@ -9,16 +9,15 @@ import com.example.deerhunter.coroutinessample.ui.utilities.UiCalculator
 import com.example.deerhunter.coroutinessample.utilities.inflate
 import com.example.deerhunter.coroutinessample.utilities.loadImage
 import com.example.deerhunter.coroutinessample.utilities.setSize
-import kotlinx.android.synthetic.main.movie_card.view.*
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.movie_card.*
 
-class MovieViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    fun bind(movie: Movie, clickListener: (Movie)-> Unit): MovieViewHolder {
-        with(itemView) {
-            title.text = movie.originalTitle
-            rating.text = movie.voteAverage.toString()
-            logo.loadImage(movie.posterPath)
-            setOnClickListener { clickListener(movie) }
-        }
+class MovieViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    fun bind(movie: Movie, clickListener: (Movie) -> Unit): MovieViewHolder {
+        title.text = movie.originalTitle
+        rating.text = movie.voteAverage.toString()
+        logo.loadImage(movie.posterPath)
+        itemView.setOnClickListener { clickListener(movie) }
         return this
     }
 
