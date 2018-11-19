@@ -5,7 +5,7 @@ import com.example.deerhunter.coroutinessample.utilities.ApiResponseConverterFac
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.jaredsburrows.retrofit2.adapter.synchronous.SynchronousCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -65,7 +65,7 @@ class ApiModule {
         return Retrofit.Builder()
                 .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(ApiResponseConverterFactory(gson))
-                .addCallAdapterFactory(SynchronousCallAdapterFactory.create())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .client(okHttpClient)
                 .build()
     }

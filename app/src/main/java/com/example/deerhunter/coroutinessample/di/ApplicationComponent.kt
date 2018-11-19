@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = arrayOf(AndroidModule::class, ApiModule::class, InteractorsModule::class))
+@Component(modules = [AndroidModule::class, ApiModule::class, InteractorsModule::class])
 interface ApplicationComponent {
     fun plus(activityModule: ActivityModule): ActivityComponent
     fun inject(app: MobileApplication)

@@ -6,7 +6,7 @@ import com.example.deerhunter.coroutinessample.di.movie.MovieModule
 import dagger.Subcomponent
 
 @ActivityScope
-@Subcomponent(modules = arrayOf(ActivityModule::class))
+@Subcomponent(modules = [ActivityModule::class])
 interface ActivityComponent {
     fun plus(module: MovieModule): MovieComponent
 

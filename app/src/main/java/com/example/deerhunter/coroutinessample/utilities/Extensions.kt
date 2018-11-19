@@ -22,6 +22,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
+import com.bumptech.glide.request.RequestListener
 import com.example.deerhunter.coroutinessample.R
 import com.example.deerhunter.coroutinessample.di.activity.ActivityComponent
 import com.example.deerhunter.coroutinessample.ui.BaseActivity
@@ -79,18 +80,22 @@ fun bundleOf(vararg params: Pair<String, Any>): Bundle {
 private const val NO_OVERRIDE = -1
 
 fun ImageView.loadImage(
-        imageLink: String?,
-        @Px width: Int = NO_OVERRIDE,
-        @Px height: Int = NO_OVERRIDE,
-        errorDrawable: Drawable = context.getDrawableCompat(R.color.card_view_image_background_error),
-        placeholderDrawable: Drawable = context.getDrawableCompat(R.color.card_view_image_background),
-        thumbnail: Float = NO_OVERRIDE.toFloat(),
-        centerCrop: Boolean = false,
-        fitCenter: Boolean = false,
-        animate: Boolean = true,
-        vararg transformations: Transformation<Bitmap>) {
+    loadingImage: Any?,
+    @Px width: Int = NO_OVERRIDE,
+    @Px height: Int = NO_OVERRIDE,
+    errorDrawable: Drawable? = context.getDrawableCompat(R.color.card_view_image_background_error)!!,
+    placeholderDrawable: Drawable? = context.getDrawableCompat(R.color.card_view_image_background)!!,
+    thumbnail: Float = NO_OVERRIDE.toFloat(),
+    centerCrop: Boolean = false,
+    fitCenter: Boolean = false,
+    animate: Boolean = true,
+    requestListener: RequestListener<Drawable>? = null,
+    vararg transformations: Transformation<Bitmap>
+) {
 
-    val request = Glide.with(context).load(getImageLink(imageLink ?: ""))
+    if (!isValidGlideContext(context) || (loadingImage is String && loadingImage.isEmpty())) return
+
+    val request = GlideApp.with(context).load(loadingImage)
 
     if (fitCenter) {
         request.fitCenter()
@@ -98,8 +103,13 @@ fun ImageView.loadImage(
         request.centerCrop()
     }
 
+    /*
+     * Note: if using center crop or fit center and transformations
+     * you need to manually add FitCenter() or CenterCrop()
+     * because glide overrides it
+     */
     if (transformations.isNotEmpty()) {
-        request.bitmapTransform(*transformations)
+        request.transforms(*transformations)
     }
 
     if (!animate) {
@@ -110,13 +120,34 @@ fun ImageView.loadImage(
         request.override(width, height)
     }
 
+    if (requestListener != null) {
+        request.listener(requestListener)
+    }
+
     if (thumbnail != NO_OVERRIDE.toFloat()) {
         request.thumbnail(thumbnail)
     }
 
-    request.error(errorDrawable)
-    request.placeholder(placeholderDrawable)
+    if (errorDrawable != null) {
+        request.error(errorDrawable)
+    }
+
+    if (placeholderDrawable != null) {
+        request.placeholder(placeholderDrawable)
+    }
+
     request.into(this)
+}
+
+private fun isValidGlideContext(context: Context?): Boolean {
+    if (context == null) return false
+
+    if (context is Activity) {
+        if (context.isDestroyed || context.isFinishing) {
+            return false
+        }
+    }
+    return true
 }
 
 fun Context.getColorCompat(@ColorRes colorRes: Int) = ContextCompat.getColor(this, colorRes)
@@ -145,7 +176,7 @@ fun dpToPx(dp: Int): Int {
 }
 
 fun Fragment.getDisplaySize(): Point {
-    val display = activity.windowManager.defaultDisplay
+    val display = requireActivity().windowManager.defaultDisplay
     val size = Point()
     display.getSize(size)
     return size

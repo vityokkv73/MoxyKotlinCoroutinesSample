@@ -7,8 +7,8 @@ import com.example.deerhunter.coroutinessample.interactors.ApiInteractor
 import com.example.deerhunter.coroutinessample.ui.movie.view.IMoviesView
 import com.example.deerhunter.coroutinessample.ui.movie.view.items.MovieItem
 import com.example.deerhunter.coroutinessample.ui.utilities.Paginator
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.android.UI
+import kotlinx.coroutines.async
 import org.jetbrains.anko.coroutines.experimental.bg
 
 @InjectViewState

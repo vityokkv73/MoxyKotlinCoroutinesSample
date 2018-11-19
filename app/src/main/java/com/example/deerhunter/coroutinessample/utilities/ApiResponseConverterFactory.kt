@@ -12,24 +12,30 @@ import java.lang.reflect.Type
 class ApiResponseConverterFactory(gson: Gson) : Converter.Factory() {
     private val gsonConverterFactory = GsonConverterFactory.create(gson)
 
-    override fun requestBodyConverter(type: Type?, parameterAnnotations: Array<out Annotation>?, methodAnnotations: Array<out Annotation>?, retrofit: Retrofit?): Converter<*, RequestBody> {
+    override fun requestBodyConverter(
+        type: Type,
+        parameterAnnotations: Array<out Annotation>,
+        methodAnnotations: Array<out Annotation>,
+        retrofit: Retrofit
+    ): Converter<*, RequestBody>? {
         return gsonConverterFactory.requestBodyConverter(type, parameterAnnotations, methodAnnotations, retrofit)
     }
 
-    override fun responseBodyConverter(type: Type?, annotations: Array<out Annotation>?, retrofit: Retrofit?): Converter<ResponseBody, *> {
+    override fun responseBodyConverter(type: Type, annotations: Array<out Annotation>, retrofit: Retrofit): Converter<ResponseBody, *>? {
         if (type.isValidApiResponseType()) {
             val actualType = (type as ParameterizedType).actualTypeArguments[0]
             val gsonConverter = gsonConverterFactory.responseBodyConverter(actualType, annotations, retrofit)
-            return ApiResponseConverter(gsonConverter)
-        } else {
-            return gsonConverterFactory.responseBodyConverter(type, annotations, retrofit)
+            if (gsonConverter != null) {
+                return ApiResponseConverter(gsonConverter)
+            }
         }
+        return gsonConverterFactory.responseBodyConverter(type, annotations, retrofit)
     }
 
     private fun Type?.isValidApiResponseType(): Boolean {
         return this != null
-                && this is ParameterizedType
-                && this.rawType == ApiResponse::class.java
-                && this.actualTypeArguments?.size == 1
+            && this is ParameterizedType
+            && this.rawType == ApiResponse::class.java
+            && this.actualTypeArguments?.size == 1
     }
 }

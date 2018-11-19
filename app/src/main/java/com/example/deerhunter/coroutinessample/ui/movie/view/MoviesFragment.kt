@@ -48,9 +48,9 @@ class MoviesFragment : MvpAppCompatFragment(), IMoviesView {
         return inflater.inflate(R.layout.movies_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val resources = context.resources
+        val resources = requireContext().resources
         val verticalSpacing = resources.getDimensionPixelSize(R.dimen.vertical_space_between_cards)
         val horizontalSpacing = resources.getDimensionPixelSize(R.dimen.horizontal_space_between_cards)
         val spanCount = rowLayoutData.columnsCount
@@ -88,7 +88,7 @@ class MoviesFragment : MvpAppCompatFragment(), IMoviesView {
     }
 
     override fun openMovieScreen(movie: Movie) {
-        activity.supportFragmentManager.beginTransaction()
+        requireActivity().supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, MovieFragment.newInstance(movie))
                 .addToBackStack(null)
                 .commit()

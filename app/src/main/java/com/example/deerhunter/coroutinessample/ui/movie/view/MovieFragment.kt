@@ -26,7 +26,7 @@ class MovieFragment : MvpAppCompatFragment(), IMovieView {
     @ProvidePresenter
     fun providePresenter() = presenter
 
-    private val movie: Movie by lazy { arguments.getParcelable<Movie>(MOVIE) }
+    private val movie: Movie by lazy { arguments!!.getParcelable<Movie>(MOVIE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getActivityComponent().plus(MovieModule()).inject(this)
@@ -37,13 +37,13 @@ class MovieFragment : MvpAppCompatFragment(), IMovieView {
         return inflater.inflate(R.layout.movie_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.setMovie(movie)
     }
 
     override fun showError(message: String) {
-        Toasty.error(activity, message).show()
+        Toasty.error(requireContext(), message).show()
     }
 
     override fun showProgress() {
