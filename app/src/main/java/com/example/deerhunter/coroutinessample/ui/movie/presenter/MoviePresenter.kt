@@ -22,7 +22,7 @@ class MoviePresenter(private val interactor: ApiInteractor) : ScopedMvpPresenter
         launch { loadMovieFullInfo() }
     }
 
-    private fun loadMovieFullInfo() = coroutineScope {
+    private suspend fun loadMovieFullInfo() = coroutineScope {
         try {
             viewState.showProgress()
 

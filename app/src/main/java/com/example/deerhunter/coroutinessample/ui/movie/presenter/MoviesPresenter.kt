@@ -1,34 +1,33 @@
 package com.example.deerhunter.coroutinessample.ui.movie.presenter
 
 import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import com.example.deerhunter.coroutinessample.data.Movie
 import com.example.deerhunter.coroutinessample.interactors.ApiInteractor
+import com.example.deerhunter.coroutinessample.ui.common.ScopedMvpPresenter
 import com.example.deerhunter.coroutinessample.ui.movie.view.IMoviesView
 import com.example.deerhunter.coroutinessample.ui.movie.view.items.MovieItem
 import com.example.deerhunter.coroutinessample.ui.utilities.Paginator
-import kotlinx.coroutines.android.UI
-import kotlinx.coroutines.async
-import org.jetbrains.anko.coroutines.experimental.bg
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @InjectViewState
-class MoviesPresenter(private val interactor: ApiInteractor) : MvpPresenter<IMoviesView>() {
+class MoviesPresenter(private val interactor: ApiInteractor) : ScopedMvpPresenter<IMoviesView>() {
 
-    private val paginator: Paginator = Paginator { offset -> loadMovies(offset) }
+    private val paginator: Paginator = Paginator { offset -> launch { loadMovies(offset) } }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        loadMovies()
+        launch { loadMovies() }
     }
 
     fun loadMore() {
         paginator.next()
     }
 
-    private fun loadMovies(page: Int = 1) = async(UI) {
+    private suspend fun loadMovies(page: Int = 1) = coroutineScope {
         try {
             viewState.showProgress()
-            val (pageNumber, _, totalPages, movies) = bg { interactor.loadMovies(page) }.await()
+            val (pageNumber, _, totalPages, movies) = interactor.loadMovies(page).await()
             paginator.totalPagesNumber = totalPages
             paginator.received(pageNumber)
             viewState.addMovies(movies.map { MovieItem(it) })
